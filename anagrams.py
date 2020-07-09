@@ -27,11 +27,12 @@ def find_anagrams(words):
     Example:
     {'dgo': ['dog'], 'act': ['cat', 'act']}
     """
-    anagrams = {
-        alphabetize(word): [
-            w for w in words
-            if alphabetize(w) == alphabetize(word)]
-        for word in words}
+    anagrams = {}
+    for word in words:
+        if ''.join(sorted(word)) in anagrams:
+            anagrams[''.join(sorted(word))] += [word]
+        else:
+            anagrams[''.join(sorted(word))] = [word]
     return anagrams
 
 
@@ -40,13 +41,12 @@ def main(args):
     if len(args) < 1:
         print("Please specify a word file!")
         sys.exit(1)
-
     with open(args[0]) as f:
-        words = f.read().split()
+       words = f.read().split()
     anagram_dict = find_anagrams(words)
     for k, v in anagram_dict.items():
         print(f"{k} : {v}")
-
+        
 
 if __name__ == "__main__":
     main(sys.argv[1:])
